@@ -37,28 +37,96 @@
     
     // Array.prototype.filter()
     // 1. Filter the list of inventors for those who were born in the 1500's
+    // Filter creates a new array based on a condition - returns true
+    const firstFilter = inventors.filter((inventor) => {
+      if (inventor.year >= 1500 && inventor.year < 1600) {
+        return true;
+      }
+    });
+
+    // console.table(firstFilter);
+
 
     // Array.prototype.map()
     // 2. Give us an array of the inventors first and last names
+    // Map creates a new array 
+    const fullNames = inventors.map((inventor) => {
+      return `${inventor.first} ${inventor.last}`;
+    });
+    console.log(fullNames);
 
     // Array.prototype.sort()
     // 3. Sort the inventors by birthdate, oldest to youngest
+    // sort takes a function which determines order based on evaluation of a and b, < 0 comes first
+    const firstSort = inventors.sort((a, b) => {
+      return a.year < b.year ? -1 : 1;
+    });
+
+    // console.table(firstSort);
 
     // Array.prototype.reduce()
     // 4. How many years did all the inventors live all together?
+    // a reducer which collects the total value, takes an initial value
+    const firstReduce = inventors.reduce((totalYears, inventor) => {
+      return totalYears + (inventor.passed - inventor.year);
+    }, 0);
+
+    // console.log(firstReduce);
 
     // 5. Sort the inventors by years lived
+    const secondSort = inventors.sort((a, b) => {
+      const firstYearsLived = a.passed - a.year;
+      const secondYearsLived = b.passed - b.year;
+
+      return firstYearsLived > secondYearsLived ? -1 : 1;
+    });
+
+    // console.table(secondSort);
 
     // 6. create a list of Boulevards in Paris that contain 'de' anywhere in the name
     // https://en.wikipedia.org/wiki/Category:Boulevards_in_Paris
-
+    // go on wikipedia
+      // locate the section or class which the info is located
+      // use selector all to get the nodelist 
+      // turn the nodelist into an array
+      // use the filter method with a condition
+    
+    // const section = document.querySelector(".mw-category");
+    // const links = section.querySelectorAll("a");
+    // use spread operator
+    // const linksArray = [...links];
+    // note: links are different than text
+      // requires map function to return textContent
+    // map first, links on their own are not iterable
+    // const filtered = linksArray.map(link => link.textContent).filter(link => link.includes("de"));
 
     // 7. sort Exercise
     // Sort the people alphabetically by last name
+    const thirdSortPeople = people.sort((lastOne, nextOne) => {
+      // first and last name are stored in strings
+      // desctructure the array, and use the split method 
+      const [aLast, aFirst] = lastOne.split(', ');
+      const [bLast, bFirst] = nextOne.split(', ');
+      return aLast < bLast ? -1 : 1;
+    })
+
+    // console.log(thirdSortPeople);
 
     // 8. Reduce Exercise
     // Sum up the instances of each of these
     const data = ['car', 'car', 'truck', 'truck', 'bike', 'walk', 'car', 'van', 'bike', 'walk', 'car', 'van', 'car', 'truck' ];
+
+    // One of the most flexible method
+      // start with blank obj
+    const transportation = data.reduce((obj, item) => {
+      // if there's no obj item, then create the object
+      if (!obj[item]) {
+        obj[item] = 0;
+      }
+      // increment value on new obj property
+      obj[item]++;
+      return obj;
+    }, {});
 
   </script>
 </body>

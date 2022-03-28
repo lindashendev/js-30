@@ -5,13 +5,51 @@
   <title>HTML5 Canvas</title>
 </head>
 <body>
+  <h1>HTML canvas</h1>
 <canvas id="draw" width="800" height="800"></canvas>
 <script>
+  // canvas styling and size
+    // get canvas from document
+    // canvas rendering content
+  const canvas = document.querySelector("#draw");
+  const ctx = canvas.getContext('2d');
+
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  ctx.strokeStyle = "blue";
+  ctx.lineJoin = 'round';
+  ctx.lineCap = 'round';
+  ctx.lineWidth = 100;
+  // flag for drawing
+    // starting x and y, and ending x and y
+    // start and stop
+  let isDrawing = false;
+  let lastX = 0;
+  let lastY = 0;
+
+  function draw(e) {
+    // conditional return
+    if (!isDrawing) return;
+    // drawing
+    ctx.beginPath();
+    ctx.moveTo(lastX, lastY);
+    ctx.lineTo(e.offsetX, e.offsetY);
+
+    // update lastX and lastY
+    console.log(e);
+  }
+
+  // event listener
+  canvas.addEventListener('mousemove', draw);
+  canvas.addEventListener('mousedown', () => isDrawing = true);
+  canvas.addEventListener('mouseup', () => isDrawing = false);
+  canvas.addEventListener('mouseout', () => isDrawing = false);
 </script>
 
 <style>
   html, body {
     margin: 0;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   }
 </style>
 

@@ -13,35 +13,63 @@
     // canvas rendering content
   const canvas = document.querySelector("#draw");
   const ctx = canvas.getContext('2d');
-
+  let hue = 0;
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
-  ctx.strokeStyle = "blue";
+
+  // hsl - to update
   ctx.lineJoin = 'round';
   ctx.lineCap = 'round';
-  ctx.lineWidth = 100;
+
   // flag for drawing
-    // starting x and y, and ending x and y
-    // start and stop
+  // starting x and y, and ending x and y
+  // start and stop
   let isDrawing = false;
   let lastX = 0;
   let lastY = 0;
+  let direction = true;
 
+  // draw function
   function draw(e) {
     // conditional return
     if (!isDrawing) return;
+    ctx.strokeStyle = `hsl(${hue}, 20%, 50%)`;
+
     // drawing
     ctx.beginPath();
     ctx.moveTo(lastX, lastY);
     ctx.lineTo(e.offsetX, e.offsetY);
+    ctx.stroke();
 
     // update lastX and lastY
-    console.log(e);
+    [lastX, lastY] = [e.offsetX, e.offsetY];
+    hue++;
+
+    // set hue back to 0 
+    if (hue >= 360) {
+      hue = 0;
+    }
+
+    // set a condition - to flip the line width
+      // when line width is outside of the 100 and 1 range - due to our incrementation and decrementation
+    if (ctx.lineWidth >= 100 || ctx.lineWidth <= 1) {
+      direction = !direction;
+    }
+
+    if (direction) {
+      ctx.lineWidth++;
+    } else {
+      ctx.lineWidth--;
+    }
   }
 
   // event listener
+  canvas.addEventListener('mousedown', (e) => {
+    isDrawing = true;
+    [lastX, lastY] = [e.offsetX, e.offsetY];
+  });
+
   canvas.addEventListener('mousemove', draw);
-  canvas.addEventListener('mousedown', () => isDrawing = true);
   canvas.addEventListener('mouseup', () => isDrawing = false);
   canvas.addEventListener('mouseout', () => isDrawing = false);
 </script>
@@ -52,6 +80,5 @@
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   }
 </style>
-
 </body>
 </html>
